@@ -26,7 +26,8 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 33
+    // تحديث الإصدار إلى 34 ليتوافق مع OneSignal
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -34,27 +35,35 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.pichillilorenzo.pwa_to_flutter_app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion 19
-        targetSdkVersion flutter.targetSdkVersion
+        
+        // تحديثSdkVersion لضمان عمل الـ WebView وأندرويد 14
+        minSdkVersion 21
+        targetSdkVersion 34
+        
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        // لدعم الإشعارات المنبثقة فوق الشاشة
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // ملاحظة: ستحتاج لاحقاً لإضافة signingConfig خاص بمتجر جوجل
             signingConfig signingConfigs.debug
         }
     }
 
     dependencies {
         implementation 'com.google.android.material:material:1.6.0'
+        // تأكد من إضافة OneSignal إذا لم تكن مضافة تلقائياً
+        implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
     }
 }
 
